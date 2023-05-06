@@ -9,9 +9,13 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+
 // Recuperar los valores de la solicitud
 $gmail = $_POST["gmail"];
 $password = $_POST["pasahitza"];
+
+$mesagge = 'console.log('. $gmail .');';
+echo $mesagge;
 
 // Buscar el usuario en la tabla erabiltzailea
 $sql = "SELECT * FROM erabiltzailea WHERE gmail = '$gmail'";
