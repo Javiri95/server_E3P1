@@ -25,7 +25,7 @@
       {
         //Buscamos el elemento en la tabla de erabiltzailea
         $resultArray = $erabiltzailea->getAllBy2Columns("gmail", $gmail, "pasahitza", $pasahitza);
-
+                                               
         if ($resultArray == null)
         {
             //Usuario no encontrado en la Base de Datos
