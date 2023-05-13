@@ -14,6 +14,7 @@
 
       $userSend['gmail']      = "";
       $userSend['pasahitza']      = "";
+      $userSend['rola']      = "";
       $userSend['error']      = "";
       
       if($gmail == "" || $pasahitza == "" )
@@ -36,6 +37,7 @@
             //Si el usuario está en la base de datos lo guardamos
             $userSend['gmail']        = $gmail;
             $userSend['pasahitza']    = $pasahitza;
+            $userSend['rola']    = $resultArray[0];
         }
 
       }
