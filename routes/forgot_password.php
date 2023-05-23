@@ -9,7 +9,6 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-
 // Recuperar los valores de la solicitud
 $gmail = $_POST["gmail"];
 $password = $_POST["pasahitza"];
@@ -22,8 +21,11 @@ $sql = "SELECT * FROM erabiltzailea WHERE gmail = '$gmail'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
+  // Hashear la nueva contraseña
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
   // Actualizar la contraseña del usuario
-  $sql = "UPDATE erabiltzailea SET pasahitza = '$password' WHERE gmail = '$gmail'";
+  $sql = "UPDATE erabiltzailea SET pasahitza = '$hashedPassword' WHERE gmail = '$gmail'";
   if ($conn->query($sql) === TRUE) {
     // Devolver una respuesta exitosa
     $response = array("success" => true);
