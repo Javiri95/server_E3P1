@@ -1,55 +1,63 @@
 <?php
-
    require_once (__DIR__."/../functions.php");
    require_once (__DIR__."/../controller/Controller.php");
    
   //  $_POST['gmail']    = 'javier.irigoyen@ikasle.aeg.eus';
-  //   $_POST['pasahitza']     = '1234qwer';
+  //  $_POST['pasahitza'] = '1234qwer';
 
-   //Verificamos que se hayan enviado las variables 'gmail' y 'pasahitza' a traves del formulario
+   // Verificamos que se hayan enviado las variables 'gmail' y 'pasahitza' a través del formulario
    if (isset($_POST['gmail']) && isset($_POST['pasahitza']))
    {
-      $gmail      = sanitizeString($_POST['gmail']);
-      $pasahitza  = sanitizeString($_POST['pasahitza']);
+      $gmail     = sanitizeString($_POST['gmail']);
+      $pasahitza = sanitizeString($_POST['pasahitza']);
 
-      $userSend['gmail']      = "";
-      $userSend['pasahitza']      = "";
-      $userSend['rola']      = "";
-      $userSend['error']      = "";
+      $userSend = array(
+         'gmail'    => "",
+         'pasahitza' => "",
+         'rola'     => "",
+         'error'    => ""
+      );
       
-      if($gmail == "" || $pasahitza == "" )
+      if ($gmail == "" || $pasahitza == "")
       {
-        //Error. No se han insertado todos los campos
-        $userSend['error'] = "Not all the fields were entered";
+         // Error. No se han insertado todos los campos
+         $userSend['error'] = "Not all fields were entered";
       }
       else
       {
-        //Buscamos el elemento en la tabla de erabiltzailea
-        $resultArray = $erabiltzailea->getAllBy2Columns("gmail", $gmail, "pasahitza", $pasahitza);
+         // Buscamos el elemento en la tabla de erabiltzailea
+         $resultArray = $erabiltzailea->getAllByColumn("gmail", $gmail);
                                                
-        if ($resultArray == null)
-        {
-            //Usuario no encontrado en la Base de Datos
+         if ($resultArray == null)
+         {
+            // Usuario no encontrado en la base de datos
             $userSend['error'] = "Invalid login attempt";
-        }
-        else
-        {
-            //Si el usuario está en la base de datos lo guardamos
-            $userSend['gmail']        = $gmail;
-            $userSend['pasahitza']    = $pasahitza;
-            $userSend['rola']    = $resultArray[0];
-        }
-
+         }
+         else
+         {
+            // Verificar la contraseña
+            $storedPassword = $resultArray[0]['pasahitza'];
+            
+            if (password_verify($pasahitza, $storedPassword))
+            {
+               // Contraseña válida
+               $userSend['gmail']     = $gmail;
+               $userSend['pasahitza'] = $storedPassword;
+               $userSend['rola']      = $resultArray[0]['rola'];
+            }
+            else
+            {
+               // Contraseña incorrecta
+               $userSend['error'] = "Invalid login attempt";
+            }
+         }
       }
 
-      //Devolvemos el usuario
+      // Devolvemos el usuario
       echo json_encode($userSend);
-      
    }
    else
    {
-       die ("Forbidden");
+      die("Forbidden");
    }
-
-
-   ?>
+?>
