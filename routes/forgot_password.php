@@ -1,9 +1,9 @@
 <?php
 // Establecer la conexión con la base de datos
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "e3p1";
+$username = "uzon8oip1qtq6";
+$password = "javi@gmail.com";
+$dbname = "dbnxzlvzbxoynz";
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
